@@ -5,7 +5,7 @@ const sequelize = new Sequelize({
   host: 'localhost',
   database: 'mynotes',
   username: 'postgres',
-  password: '1234',
+  password: '1234', //update with your password
   port: 5432,
 });
 
