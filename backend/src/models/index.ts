@@ -18,4 +18,15 @@ Object.values(models).forEach((model: any) => {
     }
 });
 
-export { sequelize, models };
+// Test connection and sync models
+async function connectDb() {
+    try {
+        await sequelize.authenticate();
+        console.log('Connection has been established successfully.');
+        await sequelize.sync();  // This line can be commented out in production
+    } catch (error) {
+        console.error('Unable to connect to the database:', error);
+    }
+}
+
+export { sequelize, models, connectDb };
