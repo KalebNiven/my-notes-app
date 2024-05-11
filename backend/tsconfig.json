@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "es2018",  // Compatible with Node.js features
+    "module": "commonjs",  // Node.js module system
+    "outDir": "./dist",  // Output directory for compiled files
+    "rootDir": "./src",  // Root directory for source files
+    "strict": true,  // Enable all strict type-checking options
+    "esModuleInterop": true,  // Allows default imports from modules with no default export
+    "skipLibCheck": true,  // Skip type checking of all declaration files (*.d.ts)
+    "forceConsistentCasingInFileNames": true
+  },
+  "exclude": ["node_modules"],  // Exclude node_modules from compilation
+  "include": ["src/**/*"]  // Include all files in src for compilation
+}
