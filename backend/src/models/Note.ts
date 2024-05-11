@@ -1,18 +1,32 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../../db');
+import { Model, DataTypes, Sequelize } from 'sequelize';
 
-const Note = sequelize.define('notes', {
-  content: {
-    type: DataTypes.TEXT,
-    allowNull: false,
-    validate: {
-      len: [20, 300]
-    }
-  }
-}, {
-    timestamps: false
+export interface NoteAttributes {
+  id?: number;
+  content: string;
+}
+
+export class Note extends Model<NoteAttributes> implements NoteAttributes {
+  public id!: number;
+  public content!: string;
+
+  // other attributes and methods can be defined here
+}
+
+export function initialize(sequelize: Sequelize): typeof Note {
+  Note.init({
+    id: {
+      type: DataTypes.INTEGER.UNSIGNED,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    content: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+  }, {
+    tableName: 'notes',
+    sequelize: sequelize,
   });
 
-
-
-module.exports = Note;
+  return Note;
+}
