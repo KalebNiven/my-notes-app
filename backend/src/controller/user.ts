@@ -10,12 +10,17 @@ const { User } = models;
 
 export const createUser = async (req: Request, res: Response) => {
     const { email, username, password } = req.body;
-    try {
-        const hashedPassword  = await bcrypt.hash(password, saltRounds);
-        await User.create({ email, username, password: hashedPassword });
-        res.sendStatus(201)
-    } catch (error) {
-        res.status(400).json({ message: 'Failed to create user: ' + (error as Error).message });
+    const user = await User.findOne({where:{email}});
+        if(user){
+            res.status(400).json({ message: 'User Already Exists' });
+        }else{
+        try {
+            const hashedPassword  = await bcrypt.hash(password, saltRounds);
+            await User.create({ email, username, password: hashedPassword });
+            res.sendStatus(201)
+        } catch (error) {
+            res.status(400).json({ message: 'Failed to create user: ' + (error as Error).message });
+        }
     }
 }
 

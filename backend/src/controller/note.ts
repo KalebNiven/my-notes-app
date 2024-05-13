@@ -18,7 +18,9 @@ export const createNote = async (req: Request, res: Response) => {
 
 export const getNotes = async (req: Request, res: Response) => {
     try {
+        const userId = req.query.userId as string;
         const notes = await Note.findAll({
+            where: { userId: parseInt(userId) },
             include: [{ model: User, as: 'user' }]
         });
         res.json(notes);
