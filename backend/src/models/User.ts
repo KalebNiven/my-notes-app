@@ -4,7 +4,7 @@ import { Note } from './Note';
 
 
 export interface UserAttributes {
-  id: number;
+  id?: number;
   username: string;
   email: string;
   password: string;
