@@ -9,10 +9,12 @@ app.use(cors());
 app.use(express.json());
 
 // Import routes
-import noteRoutes from './routes/noteRoutes'; // Make sure this uses the models
+import noteRoutes from './routes/note'; // Make sure this uses the models
+import userRoutes from './routes/user'; // Make sure this uses the models
 
 // Use routes
 app.use('/api', noteRoutes);
+app.use('/api', userRoutes);
   
 // Connect to DB and start server
 connectDb().then(() => {
