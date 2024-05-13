@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Button, Checkbox, Label, TextInput } from "flowbite-react";
 import { signin } from '../services/user';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaUser, FaLock } from 'react-icons/fa'; // Ensure you have 'react-icons' installed
 
 
@@ -52,7 +52,7 @@ function SignIn() {
                         <Checkbox checked={keepLoggedIn} onChange={() => setKeepLoggedIn(!keepLoggedIn)} />
                         <span className="text-sm text-gray-600">Keep me logged in</span>
                     </label>
-                    <a href="#" className="text-sm text-blue-500 hover:text-blue-700">Forgot Password?</a>
+                    <Link to='/signup' className="text-sm text-blue-500 hover:text-blue-700">Sign Up</Link>
                 </div>
                 <Button disabled={isSubmitDisabled} type="submit">Login</Button>
             </form>

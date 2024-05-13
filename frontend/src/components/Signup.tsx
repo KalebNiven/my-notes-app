@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Button, TextInput, Checkbox } from "flowbite-react";
 import { FaUser, FaEnvelope, FaLock } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
+import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
 import { signup } from '../services/user';
+import axios from 'axios';
 // Define the SignupType interface
 export interface SignupType {
     username: string;
@@ -16,42 +17,51 @@ function Signup() {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [termsAccepted, setTermsAccepted] = useState<boolean>(false);
+    const BASE_URL = process.env.REACT_APP_BASE_URL;
+
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
+    
         if (!isValidEmail(email)) {
             alert('Please enter a valid email address.');
             return;
         }
-
+    
         if (!isValidPassword(password)) {
-            // alert('Password must be at least 8 characters long and include a number.');
+            alert('Password must be at least 8 characters long and include a number.');
             return;
         }
-
+    
         if (!termsAccepted) {
             alert("You must accept the terms and conditions to proceed.");
             return;
         }
-
-        try {
-            // Assume a function `signup` exists for submitting the form
-            const response = await signup({ username, email, password });
+    
+        try {    
+            await axios.post(`${BASE_URL}user/signup`, {
+                'username': username,
+                'email': email,
+                'password': password
+            });
             alert('Signup successful! Redirecting to login...');
             navigate('/signin'); // adjust the route as needed
-        } catch (err) {
-            console.error('Signup error', err);
+        } catch (err: any) {    
+            // console.error(err);
+           if (err.response && err.response.data && err.response.data.message) {
+            alert(`Failed to create account: ${err.response.data.message}. Please try again.`);
+        } else {
             alert('Failed to create account. Please try again.');
         }
+        }
     };
-
+    
     const isValidEmail = (email: string) => {
         return /\S+@\S+\.\S+/.test(email);
     };
-
+    
     const isValidPassword = (password: string) => {
-        return /\d/.test(password);
+        return password.length >= 8 && /\d/.test(password);
     };
 
     return (
@@ -70,9 +80,12 @@ function Signup() {
                     <FaLock />
                     <TextInput value={password} onChange={e => setPassword(e.target.value)} id="password" type="password" placeholder='Password' required />
                 </div>
-                <div>
-                    <Checkbox checked={termsAccepted} onChange={() => setTermsAccepted(!termsAccepted)} />
-                    <span>I agree to the <a href="/terms" target="_blank">Terms and Conditions</a></span>
+                <div className="flex justify-between items-center mb-4">
+                    <div className='d-flex align-items-center'>
+                        <Checkbox checked={termsAccepted} onChange={() => setTermsAccepted(!termsAccepted)} />
+                        <span className='ml-2'>I agree to the terms</span>
+                    </div>
+                    <Link to='/signin' className="text-sm text-blue-500 hover:text-blue-700">Sign In</Link>
                 </div>
                 <Button type="submit" disabled={!termsAccepted || !password || email === '' || username === ''}>Submit</Button>
             </form>
