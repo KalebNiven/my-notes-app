@@ -52,3 +52,32 @@
 .w-350 {
   width: 350px;
 }
+
+.form-container {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  padding: 20px;
+  max-width: 400px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.input-icon {
+  display: flex;
+  align-items: center;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  padding: 5px 10px;
+  width: 100%; /* Ensures that the container takes full width */
+}
+
+.input-icon input {
+  width: 100%; /* Ensures input takes full width of its container */
+  border: none; /* Removes any default border */
+  outline: none; /* Removes focus outline to keep design clean */
+  background: transparent; /* Keeps background consistent */
+}
+
+
