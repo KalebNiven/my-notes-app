@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Button, Checkbox, Label, TextInput } from "flowbite-react";
 import { signin } from '../services/user';
 import { useNavigate } from 'react-router-dom';
+import { FaUser, FaLock } from 'react-icons/fa'; // Ensure you have 'react-icons' installed
+
 
 export interface SigninPayload {
     email: string;
@@ -9,56 +11,53 @@ export interface SigninPayload {
 }
 
 function SignIn() {
-
-    const [email, setEmail] = useState<string>('');
-    const [password, setpassword] = useState<string>('');
-    const [isSubmitDisabled, setSubmitDisabled] = useState<boolean>(false);
-
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [keepLoggedIn, setKeepLoggedIn] = useState(false);
+    const [isSubmitDisabled, setSubmitDisabled] = useState(false);
     const navigate = useNavigate();
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
         setSubmitDisabled(true);
-
         try {
             const res = await signin({ email, password });
-            setSubmitDisabled(false);
-
-            // Setting token and userid in local storage... userId can be used while creating a note
             localStorage.setItem('token', res.data.token);
             localStorage.setItem('userId', res.data.id);
-
-            navigate('/')
-            
+            if (keepLoggedIn) {
+                localStorage.setItem('keepLoggedIn', 'true');
+            }
+            navigate('/');
         } catch (err) {
-            console.log(err)
-            alert('An error occured');
+            console.error(err);
+            alert('An error occurred');
             setSubmitDisabled(false);
-        }   
-
-    }
+        }
+    };
 
     return (
-        <div className='d-flex justify-content-center'>
-            <h3 className="text-center text-3xl font-bold mb-8">Signin</h3>
+        <div className='d-flex justify-content-center form-container'>
+            <h3 className="text-center text-2xl font-bold mb-8">Login</h3>
             <form onSubmit={handleSubmit} className="flex w-350 flex-col gap-4">
-
-                <div>
-                    <div className="mb-2 block">
-                        <Label htmlFor="email1" value="Your email" />
-                    </div>
-                    <TextInput value={email} onChange={e => setEmail(e.target.value)} id="email1" type="email" placeholder="name@provider.com" required />
+                <div className="input-icon">
+                    <FaUser />
+                    <TextInput value={email} onChange={e => setEmail(e.target.value)} id="email1" type="email" placeholder="Email address" required />
                 </div>
-                <div>
-                    <div className="mb-2 block">
-                        <Label htmlFor="password" value="Your password" />
-                    </div>
-                    <TextInput value={password} onChange={e => setpassword(e.target.value)} id="password" type="password" required />
+                <div className="input-icon">
+                    <FaLock />
+                    <TextInput value={password} onChange={e => setPassword(e.target.value)} id="password" type="password" placeholder='Password' required />
                 </div>
-                <Button disabled={isSubmitDisabled} type="submit">Login </Button>
+                <div className="flex justify-between items-center mb-4">
+                    <label className="flex items-center gap-2 cursor-pointer">
+                        <Checkbox checked={keepLoggedIn} onChange={() => setKeepLoggedIn(!keepLoggedIn)} />
+                        <span className="text-sm text-gray-600">Keep me logged in</span>
+                    </label>
+                    <a href="#" className="text-sm text-blue-500 hover:text-blue-700">Forgot Password?</a>
+                </div>
+                <Button disabled={isSubmitDisabled} type="submit">Login</Button>
             </form>
         </div>
-    )
+    );
 }
 
 export default SignIn
