@@ -4,8 +4,8 @@ const BASE_URL: string = 'http://localhost:3001/api/';
 
 // Services of CRUD APIs
 
-export const getNotes = ()=>{
-    return axios.get<Note[]>(`${BASE_URL}notes`);
+export const getNotes = (userId: string | null)=>{
+    return axios.get<Note[]>(`${BASE_URL}notes?userId=${userId}`);
 }
 
 export const deleteNote = (id:number)=>{
