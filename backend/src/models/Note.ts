@@ -54,7 +54,7 @@ export class Note extends Model<NoteAttributes> implements NoteAttributes {
       },
       userId: {
         type: DataTypes.INTEGER,
-        allowNull: true,
+        allowNull: false,
       },
     }, {
       sequelize,
