@@ -7,18 +7,20 @@ export interface UserAttributes {
   id: number;
   username: string;
   email: string;
+  password: string;
 }
 //Define the User model
 export class User extends Model<UserAttributes> implements UserAttributes {
   public id!: number;
   public username!: string;
   public email!: string;
+  public password!: string;
 
   // Initialize model with sequelize instance
   static initModel(sequelize: Sequelize): typeof User {
     User.init({
       id: {
-        type: DataTypes.INTEGER.UNSIGNED,
+        type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
       },
@@ -27,6 +29,10 @@ export class User extends Model<UserAttributes> implements UserAttributes {
         allowNull: false
       },
       email: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      password: {
         type: DataTypes.STRING,
         allowNull: false
       },

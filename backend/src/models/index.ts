@@ -5,13 +5,16 @@ import { User } from './User';
 require('dotenv').config(); // This line loads the .env file
 const { DB_USER, DB_PASSWORD, DB_DATABASE, DB_HOST, DB_PORT } = process.env;
 
+console.log(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_DATABASE}`)
+
 const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_DATABASE}`, {
     dialect: 'postgres',
     dialectOptions: {
-        ssl: {
-            require: process.env.NODE_ENV === 'production', // Only require SSL in production
-            rejectUnauthorized: false  // Note: Not recommended for production
-        }
+        ssl: process.env.NODE_ENV === 'production' ? {
+            require: true,          // Require SSL in production
+            rejectUnauthorized: true  // Do not allow unauthorized certificates
+          } : false               // Disable SSL in non-production environments
+      
     }
 });
 
@@ -44,6 +47,7 @@ Object.values(models).forEach((model: any) => {
  * Note: The `sequelize.sync()` call can be commented out in production to avoid unnecessary database schema changes.
  */
 async function connectDb() {
+    console.log(`Running in ${process.env.NODE_ENV || 'development'} mode`);
     try {
         await sequelize.authenticate();
         console.log('Connection has been established successfully.');

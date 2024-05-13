@@ -41,7 +41,7 @@ export class Note extends Model<NoteAttributes> implements NoteAttributes {
   static initModel(sequelize: Sequelize): typeof Note {
     Note.init({
       id: {
-        type: DataTypes.INTEGER.UNSIGNED,
+        type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
       },
@@ -53,7 +53,7 @@ export class Note extends Model<NoteAttributes> implements NoteAttributes {
         },
       },
       userId: {
-        type: DataTypes.INTEGER.UNSIGNED,
+        type: DataTypes.INTEGER,
         allowNull: true,
       },
     }, {
