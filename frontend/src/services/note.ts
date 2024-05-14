@@ -18,4 +18,4 @@ export const createNote = (note: Omit<Note, "id">) => {
 
 export const updateNote = (note: Note) => {
   return axios.put(`${BASE_URL}notes/${note.id}`, note);
-};
+}

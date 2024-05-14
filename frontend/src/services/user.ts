@@ -1,7 +1,8 @@
 import axios from "axios";
 import { SignupType } from "../components/Signup";
 import { SigninPayload } from "../components/Signin";
-
+import { Userload } from "../components/SearchInput";
+ const userid=localStorage.getItem('userid');
 // get the env variable from .env file 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 

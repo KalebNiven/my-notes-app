@@ -5,7 +5,8 @@ import { Note } from "../services/types";
 import { getNotes } from "../services/note";
 import EditNoteModal from "./EditNoteModal";
 import SearchInput from "./SearchInput";
-
+import axios from "axios";
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 const MainPage = () => {
   const [notes, setNotes] = useState<Note[]>([]);
   const [search, setSearch] = useState("");
@@ -41,6 +42,29 @@ const MainPage = () => {
       note.content.toLowerCase().includes(search.toLowerCase())
     );
   }, [notes, search]);
+  const handleSearch = async (query: string) => {
+    if (query.trim() !== "") {
+      const response = await axios.get(`${BASE_URL}notes/search/${query}`, {
+        params: { content: query }
+      });
+      console.log(response);
+      setNotes(response.data.data);
+    } else {
+      setNotes([]);
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearch(value);
+   
+      
+       handleSearch(value);
+      
+      
+   
+    
+  };
 
   return (
     <div className="flex h-full w-full">
@@ -49,7 +73,7 @@ const MainPage = () => {
         <SearchInput
           className="mb-6"
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={handleChange}
         />
         <AllNotes
           notes={filteredNotes}

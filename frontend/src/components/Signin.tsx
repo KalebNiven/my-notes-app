@@ -25,6 +25,7 @@ function SignIn() {
       localStorage.setItem("userId", res.data.id);
       if (keepLoggedIn) {
         localStorage.setItem("keepLoggedIn", "true");
+        localStorage.setItem('userid',res.data.id)
       }
       navigate("/");
     } catch (err) {

@@ -24,6 +24,25 @@ export const createUser = async (req: Request, res: Response) => {
     }
 }
 
+export const getUSer = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    try {
+        const user = await User.findOne({ where: { id } }); // Await the promise
+
+        if (user) { // Check if user is not null
+            res.status(200).json({
+                data: {
+                    username: user.username,
+                }
+            });
+        } else {
+            res.status(404).json({ message: 'User not found' }); // Handle the case where user is null
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Internal server error' }); // Handle errors
+    }
+};
+
 export const signin = async (req: Request, res: Response) => {
     const { email,  password } = req.body;
     try {

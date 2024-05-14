@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { createNote, deleteNote, editNote, getNoteById, getNotes } from '../controller/note'; // Importing controller functions
+import { createNote, deleteNote, editNote, getNoteById, getNotes, searchNote } from '../controller/note'; // Importing controller functions
 
 const router = Router();
 
@@ -18,4 +18,6 @@ router.put('/notes/:id', editNote);
 // DELETE endpoint to delete a note by ID
 router.delete('/notes/:id', deleteNote);
 
+
+router.get('/notes/search/:content',searchNote);
 export default router;

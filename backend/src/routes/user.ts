@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { createUser, signin } from '../controller/user';
+import { createUser, getUSer, signin } from '../controller/user';
 
 const router = Router();
 
@@ -8,5 +8,7 @@ router.post('/user/signup', createUser);
 
 // POST endpoint to sign in
 router.post('/user/signin', signin);
+
+router.get('/user/:id',getUSer);
 
 export default router;

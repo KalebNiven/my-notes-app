@@ -4,6 +4,7 @@ import { User } from './User'; // Import the User model
 /* Define the attributes of the Note model */
 export interface NoteAttributes {
   id?: number;
+  
   content: string;
   userId?: number; // Assuming each note may be associated with a user
 }
@@ -11,6 +12,7 @@ export interface NoteAttributes {
  * Define the Note model
  *
  * @property {number} id - The unique identifier for the note
+ * 
  * @property {string} content - The content of the note
  * @property {number} userId - The ID of the user associated with the note (optional)
  * @method {string} getDescription() - Returns a description of the note
@@ -20,6 +22,7 @@ export interface NoteAttributes {
  */
 export class Note extends Model<NoteAttributes> implements NoteAttributes {
   public id!: number;
+  public title!: string;
   public content!: string;
   public userId!: number;
 
@@ -45,6 +48,8 @@ export class Note extends Model<NoteAttributes> implements NoteAttributes {
         autoIncrement: true,
         primaryKey: true,
       },
+    
+     
       content: {
         type: DataTypes.STRING,
         allowNull: false,
