@@ -6,10 +6,16 @@ My Notes App is an intuitive web application designed for personal note manageme
 
 ## Features
 
-- **Note Management:** Users can add new notes with titles and text content, view them in a list format, edit their details, or delete them as needed.
-- **Real-time Updates:** Changes made to notes are updated in real-time, ensuring that the information displayed is always current.
+- **Note Management:** Users can add new notes with text content, view them in a list format, edit their details, or delete them as needed.
+- **Real-time Updates:** Changes made to notes are updated in real-time, and is very fast, ensuring that the information displayed is always current.
 - **Responsive Design:** The application is fully responsive, providing an optimal viewing experience across various devices and screen sizes.
 - **Search Functionality:** Quickly find specific notes using the search feature, which filters notes based on keywords within the title or text.
+
+## User Authentication Flow
+
+- **Sign Up Process:** Users can register for an account by providing a username, email, and password. The signup process includes validations to ensure data integrity, such as verifying that the email address is in a valid format and the password meets specified security criteria.
+- **Sign In Process:** Returning users can log in using their registered email and password. Upon successful authentication, users are granted access to their notes. Incorrect login attempts will be notified with a specific error message regarding incorrect credentials to improve user experience.
+
 
 ## Technology Stack
 
@@ -64,7 +70,7 @@ My Notes App is an intuitive web application designed for personal note manageme
 
 ## Testing
 
-To test the API endpoints, use Postman or any other API testing tool to send requests to `http://localhost:3000/api/notes`.
+To test the API endpoints, use Postman or any other API testing tool to send requests to `http://localhost:3001/api/notes`.
 
 ## Deployment
 
