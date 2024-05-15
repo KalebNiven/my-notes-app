@@ -1,4 +1,9 @@
-node_modules
+
+# backend 
 backend/node_modules
+backend/.package-lock.json
+
+# frontend
 frontend/node_modules
-.package-lock.json
+frontend/build
+frontend/.package-lock.json
