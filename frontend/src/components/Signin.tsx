@@ -3,6 +3,7 @@ import { Button, Checkbox, Label, TextInput } from "flowbite-react";
 import { signin } from "../services/user";
 import { Link, useNavigate } from "react-router-dom";
 import { FaUser, FaLock } from "react-icons/fa";
+import axios from "axios";
 
 export interface SigninPayload {
   email: string;
@@ -28,9 +29,16 @@ function SignIn() {
         localStorage.setItem('userid',res.data.id)
       }
       navigate("/");
-    } catch (err) {
-      console.error(err);
-      alert("An error occurred");
+    } catch (error: unknown) {  // Updated to specify the type as unknown
+      console.error(error);
+      // Type assertion to specify that error is of AxiosError type, or any other type you expect
+      let message = "An error occurred";
+      if (axios.isAxiosError(error) && error.response) { // Checking if it's an Axios error and has a response
+        message = error.response.data && error.response.data.message
+                ? error.response.data.message
+                : "Failed to process request.";
+      }
+      alert(message);
       setSubmitDisabled(false);
     }
   };
@@ -76,7 +84,7 @@ function SignIn() {
             Sign Up
           </Link>
         </div>
-        <Button disabled={isSubmitDisabled} type="submit">
+        <Button disabled={isSubmitDisabled} type="submit" className="bg-black text-white">
           Login
         </Button>
       </form>

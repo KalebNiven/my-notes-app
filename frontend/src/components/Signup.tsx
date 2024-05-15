@@ -124,6 +124,7 @@ function Signup() {
           disabled={
             !termsAccepted || !password || email === "" || username === ""
           }
+          className="bg-black text-white"
         >
           Submit
         </Button>
