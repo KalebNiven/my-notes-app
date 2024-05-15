@@ -11,7 +11,17 @@ import axios from "axios";
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 const userid = localStorage.getItem('userId');
 
-const AllNotes = ({ notes = [], handleOpenEditModal, className, onAddNote }: { notes?: Note[]; onAddNote: VoidFunction; handleOpenEditModal: (note: Note) => void; className?: string; }) => {
+const AllNotes = ({
+  notes = [],
+  handleOpenEditModal,
+  className,
+  onAddNote,
+}: {
+  notes?: Note[];
+  onAddNote: VoidFunction;
+  handleOpenEditModal: (note: Note) => void;
+  className?: string;
+}) => {
   const [username, setUsername] = useState("");
   const [allNotes, setAllNotes] = useState<Note[]>(notes);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -23,10 +33,16 @@ const AllNotes = ({ notes = [], handleOpenEditModal, className, onAddNote }: { n
       if (userid) {
         const user = await axios.get(`${BASE_URL}user/${userid}`);
         setUsername(user.data.data.username);
+      } else {
+        console.error('User ID is null');
       }
     };
     fetchUser();
   }, []);
+
+  useEffect(() => {
+    setAllNotes(notes);
+  }, [notes]);
 
   const deletenotesbutton = async (id: number) => {
     try {
@@ -40,11 +56,13 @@ const AllNotes = ({ notes = [], handleOpenEditModal, className, onAddNote }: { n
   const handleCreateNote = async () => {
     if (userid) {
       try {
+        console.log('Creating note for user ID:', userid);
         const newNote = await createNote({
           userId: userid,
           content: 'New Note',
           createdAt: new Date().toISOString()
         });
+        console.log('Note created:', newNote.data);
         setAllNotes([...allNotes, newNote.data]);
       } catch (error) {
         console.error('Error creating the note:', error);
