@@ -57,7 +57,7 @@ const EditNoteModal = ({
   };
 
   const isInvalidContent = useMemo(
-    () => (content.length < 20 || content.length > 200) && !!content,
+    () => (content.length < 20 || content.length > 300) && !!content,
     [content]
   );
 
@@ -97,7 +97,7 @@ const EditNoteModal = ({
           />
           {isInvalidContent && (
             <div className="pt-2 text-rose-600">
-              Note content must be between 20 and 200 characters long
+              Note content must be between 20 and 300 characters long
             </div>
           )}
 
