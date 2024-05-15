@@ -88,7 +88,7 @@ const EditNoteModal = ({
           
           <button
             disabled={isLoading}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-3"
+            className="bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded mt-3"
             type="submit"
           >
             {isLoading ? "Submitting..." : "Submit"}
