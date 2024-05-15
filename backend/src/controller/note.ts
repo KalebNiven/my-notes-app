@@ -11,8 +11,8 @@ export const createNote = async (req: Request, res: Response) => {
     console.log(content)
 
     
-    if ( isValidLength(content, 20, 200)) {
-        return res.status(400).json({ message: "Note content must be between 20 and 200 characters long." });
+    if ( isValidLength(content, 20, 300)) {
+        return res.status(400).json({ message: "Note content must be between 20 and 300 characters long." });
     }
 
     try {
@@ -67,8 +67,8 @@ export const editNote = async (req: Request, res: Response) => {
     const { content} = req.body;
 
    
-    if ( isValidLength(content, 20, 200)) {
-        return res.status(400).json({ message: " content must be between 20 and 200 characters long." });
+    if ( isValidLength(content, 20, 300)) {
+        return res.status(400).json({ message: " content must be between 20 and 300 characters long." });
     }
 
     try {
