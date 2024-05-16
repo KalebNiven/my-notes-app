@@ -1,7 +1,8 @@
 import { Modal } from "flowbite-react";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import { createNote, updateNote } from "../services/note";
 import { Note } from "../services/types";
+import cn from "classnames";
 
 const EditNoteModal = ({
   activeNote,
@@ -39,7 +40,7 @@ const EditNoteModal = ({
       const userId = localStorage.getItem("userId") as string;
       if (activeNote) {
         // console.log(title);
-        await updateNote({ ...activeNote , content, });
+        await updateNote({ ...activeNote, content });
       } else {
         await createNote({ content, userId });
       }
@@ -47,11 +48,18 @@ const EditNoteModal = ({
       onCloseModal();
     } catch (error: any) {
       console.error("Error saving note:", error.response.data.message);
-      setMessage("Error saving note: " + (error.response.data.message || error));
+      setMessage(
+        "Error saving note: " + (error.response.data.message || error)
+      );
     } finally {
       setIsLoading(false);
     }
   };
+
+  const isInvalidContent = useMemo(
+    () => (content.length < 20 || content.length > 200) && !!content,
+    [content]
+  );
 
   return (
     <Modal show={openModal} size="md" onClose={onCloseModal} popup>
@@ -60,7 +68,6 @@ const EditNoteModal = ({
       </Modal.Header>
       <Modal.Body>
         <form className="max-w-sm mx-auto" onSubmit={submit}>
-       
           {/* <label
             htmlFor="title-input"
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -83,16 +90,38 @@ const EditNoteModal = ({
             id="content-input"
             onChange={(e) => setContent(e.target.value)}
             value={content}
-            className="block w-full p-4 min-h-[200px] text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className={cn(
+              isInvalidContent ? "!border-rose-600" : "",
+              "block w-full p-4 min-h-[200px] text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500"
+            )}
           />
-          
-          <button
-            disabled={isLoading}
-            className="bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded mt-3"
-            type="submit"
-          >
-            {isLoading ? "Submitting..." : "Submit"}
-          </button>
+          {isInvalidContent && (
+            <div className="pt-2 text-rose-600">
+              Note content must be between 20 and 200 characters long
+            </div>
+          )}
+
+          <div className="flex gap-2">
+            <button
+              disabled={isLoading || isInvalidContent || !content}
+              className={cn(
+                isLoading || isInvalidContent || !content ? "opacity-60" : "",
+                "bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded mt-3"
+              )}
+              type="submit"
+            >
+              {isLoading ? "Submitting..." : "Submit"}
+            </button>
+            <button
+              onClick={onCloseModal}
+              disabled={isLoading}
+              className="bg-rose-600 hover:bg-rose-500 text-white font-bold py-2 px-4 rounded mt-3"
+              type="button"
+            >
+              Cancel
+            </button>
+          </div>
+
           {message && <i className="text-red-600 font-bold">{message}</i>}
         </form>
       </Modal.Body>

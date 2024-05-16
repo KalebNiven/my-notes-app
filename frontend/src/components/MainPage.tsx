@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import AllNotes from "./AllNotes";
 import Sidebar from "./Sidebar";
 import { Note } from "../services/types";
-import { getNotes } from "../services/note";
+import { createNote, deleteNote, getNotes } from "../services/note";
 import EditNoteModal from "./EditNoteModal";
 import SearchInput from "./SearchInput";
 import axios from "axios";
@@ -37,48 +37,42 @@ const MainPage = () => {
     setActiveNote(undefined);
   };
 
-  const filteredNotes = useMemo(() => {
-    return notes.filter((note) =>
-      note.content.toLowerCase().includes(search.toLowerCase())
-    );
-  }, [notes, search]);
   const handleSearch = async (query: string) => {
     if (query.trim() !== "") {
       const response = await axios.get(`${BASE_URL}notes/search/${query}`, {
-        params: { content: query }
+        params: { content: query },
       });
       console.log(response);
       setNotes(response.data.data);
     } else {
-      setNotes([]);
+      fetchNotes();
     }
   };
 
+  const handleDeleteNote = async (id: number) => {
+    try {
+      await deleteNote(id);
+      refresh();
+    } catch (error) {
+      console.error("Error updating the note:", error);
+    }
+  };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearch(value);
-   
-      
-       handleSearch(value);
-      
-      
-   
-    
+    handleSearch(value);
   };
 
   return (
     <div className="flex h-full w-full">
       <Sidebar onAddNote={() => setShowEditModal(true)} />
       <div className="w-full md:w-[calc(100%-100px)]  p-4 w-full h-full">
-        <SearchInput
-          className="mb-6"
-          value={search}
-          onChange={handleChange}
-        />
+        <SearchInput className="mb-6" value={search} onChange={handleChange} />
         <AllNotes
-          notes={filteredNotes}
+          notes={notes}
           handleOpenEditModal={handleOpenEditModal}
           onAddNote={() => setShowEditModal(true)}
+          onDeleteNote={handleDeleteNote}
         />
       </div>
       <EditNoteModal
